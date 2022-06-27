@@ -1,0 +1,84 @@
+\documentclass{ctexart}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{作业一: 洛必达法则的叙述与证明}
+
+
+\author{黄槐靖\\ 专业：信息与计算科学  学号：3210105250}
+
+\begin{document}
+
+\maketitle
+这是一个来自数学领域的问题。
+\section{问题描述}
+问题叙述如下: 设函数$f(x)$和$g(x)$在$(a,a+d]$上可导（d是某个正常数），且$g'(x) \neq 0$.若此时有
+ \begin{equation}
+ \lim_{x \to a+}f(x)=\lim_{x \to a+}g(x)=0\notag
+ \end{equation}
+或
+ \begin{equation}
+ \lim_{x \to a+}g(x)=\infty\notag
+ \end{equation}
+且$\lim\limits_{x \to a+}\frac{f'(x)}{g'(x)}$存在（可以是有限数或$\infty$）,则成立
+ \begin{equation}
+ \lim_{x \to a+}\frac{f(x)}{g(x)}=\lim_{x \to a+}\frac{f'(x)}{g'(x)}\notag.
+ \end{equation}
+
+\section{证明}
+证明：这里仅对$\lim\limits_{x \to a+}\frac{f'(X)}{g'(X)}=A$为有限数时来证明，当$A$为无穷大时的证明过程是类似的。\\
+       先证明$\lim_{x \to a+}f(x)=\lim_{x \to a+}g(x)=0$的情况。\\
+      由于函数在$x=a$处的值与$x \to a+$时的极限无关，因此可以补充定义
+   \begin{equation}
+   f(a)=g(a)=0\notag
+   \end{equation}
+      使得$f(x)$和$g(x)$在$(a,a+d]$上连续。这样，经补充定义后的函数$g(x)$和$g(x)$在$(a,a+d]$上满足Cauchy中值定理的条件，因而对于任意$x \in (a,a+d)$，存在$\xi \in (a,a+d)$，满足
+    \begin{equation}
+    \frac{f(x)}{g(x)}=\frac{f(x)-f(a)}{g(x)-g(a)}=\frac{f'(\xi)}{g'(\xi)}.
+    \end{equation}
+        当$x \to a+$时显然有$\xi \to a+$.由于$\lim\limits_{x \to a+}\frac{f'(x)}{g'(x)}$存在，在两端令$x \to a+$，即有
+    \begin{equation}
+    \lim_{x \to a+}\frac{f(x)}{g(x)}=\lim_{\xi \to a+}\frac{f'(\xi)}{g'(\xi)}=\lim_{x \to a+}\frac{f'(x)}{g'(x)}.
+    \end{equation}
+        下面证明$\lim\limits_{x \to a+}=\infty$时的情况。
+        记$x_{0}$是$(a,a+d]$中任意一个固定点，则当$x  \neq x_{0}$时，$\frac{f(x)}{g(x)}$可以改写为
+     \begin{align}
+     \frac{f(x)}{g(x)}&=\frac{f(x)-f(x_{0})}{g(x)}+\frac{f(x_{0})}{g(x)}\notag\\
+     &=\frac{g(x)-g(x_{0})}{g(x)}\times\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}+\frac{f(x_{0})}{g(x)}\notag\\
+     &=[1-\frac{g(x_{0})}{g(x)}]\times\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}+\frac{f(x_{0})}{g(x)}.\label{sec:1}
+     \end{align}
+         由（\ref{sec:1}）得，
+     \begin{align}
+     |\frac{f(x)}{g(x)}-A|&=|[1-\frac{g(x_{0})}{g(x)}]\times\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}+\frac{f(x_{0})}{g(x)}-A|\notag\\
+     &\le|1-\frac{g(x_{0})}{g(x)}|\times|\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}-A|+|\frac{f(x_{0}-Ag(x_{0}))}{g(x)}|.
+     \end{align}
+          因为$\lim\limits_{x \to a+}\frac{f'(x)}{g'(x)}=A$,所以对于任意$\epsilon>0$,存在$\rho>0(\rho<d)$，当$0<x-a<\rho$时，
+          \begin{equation}
+          |\frac{f'(x)}{g'(x)}-A|<\epsilon
+          \end{equation}
+          取$x_{0}=a+\rho$，有Cauchy中值定理，对于任意$x \in (a,x_{0})$，存在$\xi \in (x,x_{0}) \subset (a,a+\rho)$，满足
+          \begin{equation}
+          \frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}=\frac{f'(\xi)}{g'(\xi)}.\label{sec:2}
+          \end{equation}
+          由（\ref{sec:2}）得到
+          \begin{equation}
+          |\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}-A|=|\frac{f'(\xi)}{g'(\xi)}-A|<\epsilon.
+          \end{equation}
+          又因为$\lim\limits_{x \to a+}g(x)=\infty$，所以可以找到正数$\delta<\rho$，当$0<x-a<\delta$时，成立
+          \begin{equation}
+          |1-\frac{g(x_{0})}{g(x)}|<2,|\frac{f(x_{0})-Ag(x_{0})}{g(x)}|<\epsilon.
+          \end{equation}
+          综上所述，即知对于任意$\epsilon>0$，存在$\delta>0$，当$0<x-a<\delta$时，
+          \begin{equation}
+          |\frac{f(x)}{g(x)}-A|\le|1-\frac{g(x_{0})}{g(x)}|\times|\frac{f(x)-f(x_{0})}{g(x)-g(x_{0})}|+|\frac{f(x_{0})-Ag(x_{0})}{g(x)}|<3\epsilon,
+          \end{equation}
+          由定义即得
+           \begin{equation}
+           \lim_{x \to a+}\frac{f(x)}{g(x)}=\lim_{x \to a+}\frac{f'(x)}{g'(x)}\notag.
+           \end{equation}
+
+
+
+
+\end{document}
