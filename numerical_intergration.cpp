@@ -2,6 +2,7 @@
 #include<vector>
 #include<cmath>
 #include<iomanip>
+#include<ctime>
 using namespace std;
 
 const double euler_number=2.718281828459045;
@@ -61,9 +62,11 @@ private:
     {
         double a[55];
         int count=0;
-        double temp=1;
-        for(int i=0;i<10;i++)
-            a[count++]=trapezoid(low,up,pow(2,i));
+        double temp=1,temp_i=1;
+
+        a[count++]=trapezoid(low,up,temp_i);
+        for(int i=1;i<10;i++)
+            a[count++]=trapezoid(low,up,temp_i*=2);
         for(int i=1;i<10;i++)
             for(int j=0;j<9-i;j++)
             {
@@ -77,11 +80,13 @@ private:
     {
         double a[55];
         int count=0;
-        double temp=1;
+        double temp=1,temp_i=1;
+
         while(true)
         {
-            for(int i=0;i<10;i++)
-                a[count++]=trapezoid(lower_bound,upper_bound,pow(2,i));
+            a[count++]=trapezoid(low,up,temp_i);
+            for(int i=1;i<10;i++)
+                a[count++]=trapezoid(low,up,temp_i*=2);
             for(int i=1;i<10;i++)
                 for(int j=0;j<9-i;j++)
                 {
@@ -94,12 +99,14 @@ private:
             {
                 count=0;
                 temp=1;
+                temp_i=2;
                 int internal=2;
 
                 while(true)
                 {
-                    for(int i=0;i<10;i++)
-                        a[count++]=trapezoid(lower_bound,upper_bound,pow(internal,i));
+                    a[count++]=trapezoid(low,up,temp_i);
+                    for(int i=1;i<10;i++)
+                        a[count++]=trapezoid(low,up,temp_i*=2);
                     for(int i=1;i<10;i++)
                         for(int j=0;j<9-i;j++)
                         {
@@ -112,6 +119,8 @@ private:
                     {
                         internal*=2;
                         count=0;
+                        temp=1;
+                        temp_i=internal;
                     }
                 }
             }
@@ -169,19 +178,18 @@ int main()
 {
     double (*fu)(double);
     fu=function;
-    numerical_intergration cal1(fu,0,1,4);
-    cout<<fixed<<setprecision(16);
-    cout<<cal1.trapezoid()<<endl;
-    cout<<cal1.simpson()<<endl;
-    cout<<cal1.cotes()<<endl<<endl;
 
+    clock_t start_2=clock();
     numerical_intergration cal2(fu,0,1,8);
-    cout<<cal2.trapezoid()<<endl;
-    cout<<cal2.simpson()<<endl;
-    cout<<cal2.cotes()<<endl<<endl;
+    cout<<setprecision(16)<<cal2.cotes()<<endl;
+    clock_t end_2=clock();
+    cout<<(double)(end_2-start_2)/CLOCKS_PER_SEC<<endl<<endl;
 
-    numerical_intergration cal3(fu,0,1,1e-12);
-    cout<<cal3.romberg()<<endl<<endl;
+    clock_t start_3=clock();
+    numerical_intergration cal3(fu,0,1,1e-9);
+    cout<<cal3.romberg()<<endl;
+    clock_t end_3=clock();
+    cout<<(double)(end_3-start_3)/CLOCKS_PER_SEC<<endl<<endl;
 
     system("pause");
     return 0;
