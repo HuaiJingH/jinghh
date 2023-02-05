@@ -57,11 +57,72 @@ private:
         return sum;
     }
 
+    double romberg(double low,double up)
+    {
+        double a[55];
+        int count=0;
+        double temp=1;
+        for(int i=0;i<10;i++)
+            a[count++]=trapezoid(low,up,pow(2,i));
+        for(int i=1;i<10;i++)
+            for(int j=0;j<9-i;j++)
+            {
+                temp*=4;
+                a[count++]=(temp*a[count-(10-i)]-a[count-(11-i)])/(temp-1);
+            }
+        return a[count-1];
+    }
+
+    double romberg(double low,double up,double pre)
+    {
+        double a[55];
+        int count=0;
+        double temp=1;
+        while(true)
+        {
+            for(int i=0;i<10;i++)
+                a[count++]=trapezoid(lower_bound,upper_bound,pow(2,i));
+            for(int i=1;i<10;i++)
+                for(int j=0;j<9-i;j++)
+                {
+                    temp*=4;
+                    a[count++]=(temp*a[count-(10-i)]-a[count-(11-i)])/(temp-1);
+                }
+            if(abs(a[count-1]-a[count-3])<precision)
+                return a[count-1];
+            else
+            {
+                count=0;
+                temp=1;
+                int internal=2;
+
+                while(true)
+                {
+                    for(int i=0;i<10;i++)
+                        a[count++]=trapezoid(lower_bound,upper_bound,pow(internal,i));
+                    for(int i=1;i<10;i++)
+                        for(int j=0;j<9-i;j++)
+                        {
+                            temp*=4;
+                            a[count++]=(temp*a[count-(10-i)]-a[count-(11-i)])/(temp-1);
+                        }
+                    if(abs(a[count-1]-a[count-3])<precision)
+                        return a[count-1];
+                    else
+                    {
+                        internal*=2;
+                        count=0;
+                    }
+                }
+            }
+        }
+    }
+
 public:
     numerical_intergration() {}
-    numerical_intergration(double (*f)(double x),int div=1):func{f},division{div} {}
+    numerical_intergration(double (*f)(double x),int div=1):func{f},division{div},precision{-1} {}
     numerical_intergration(double (*f)(double x),double low,double up,int div=1)
-    :func{f},upper_bound{up},lower_bound{low},division{div} {}
+    :func{f},upper_bound{up},lower_bound{low},division{div},precision{-1} {}
     numerical_intergration(double (*f)(double x),double low,double up,double pre)
     :func{f},upper_bound{up},lower_bound{low},precision{pre} {}
 
@@ -91,47 +152,12 @@ public:
 
     double romberg()
     {
-        double a[55];
-        int count=0;
-        while(true)
-        {
-            for(int i=0;i<10;i++)
-                a[count++]=trapezoid(lower_bound,upper_bound,pow(2,i));
-            for(int i=1;i<10;i++)
-                for(int j=0;j<9-i;j++)
-                {
-                    double temp=pow(4,i);
-                    a[count++]=(temp*a[count-(10-i)]-a[count-(11-i)])/(temp-1);
-                }
-            if(abs(a[count-1]-a[count-3])<precision)
-                return a[count-1];
-            else
-            {
-                count=0;
-                int cur=1;
-                int internal=pow(2,cur);
-
-                while(true)
-                {
-                    for(int i=0;i<10;i++)
-                        a[count++]=trapezoid(lower_bound,upper_bound,pow(internal,i));
-                    for(int i=1;i<10;i++)
-                        for(int j=0;j<9-i;j++)
-                        {
-                            double temp=pow(4,i);
-                            a[count++]=(temp*a[count-(10-i)]-a[count-(11-i)])/(temp-1);
-                        }
-                    if(abs(a[count-1]-a[count-3])<precision)
-                        return a[count-1];
-                    else
-                    {
-                        cur++;
-                        count=0;
-                    }
-                }
-            }
-        }
+        if(precision==-1)
+            return romberg(lower_bound,upper_bound);
+        else
+            return romberg(lower_bound,upper_bound,precision);
     }
+
 };
 
 double function(double x)
@@ -154,7 +180,7 @@ int main()
     cout<<cal2.simpson()<<endl;
     cout<<cal2.cotes()<<endl<<endl;
 
-    numerical_intergration cal3(fu,0,1,1e-8);
+    numerical_intergration cal3(fu,0,1,1e-12);
     cout<<cal3.romberg()<<endl<<endl;
 
     system("pause");
