@@ -284,8 +284,9 @@ int main()
 {
     function<double> fu;    //函数对象方式
     numerical_intergration<function<double>> cal(0,1);
-    cout.setf(ios_base::showpoint);         //显示小数后的0
-    cout.precision(8);      //cout.precision() 设置精度；cout<<setprecision() 设置输出小数位数
+    //cout.setf(ios_base::showpoint);         //显示小数后的0，两种使用方式
+    cout<<showpoint;
+    cout.precision(8);      //cout.precision() 设置小数点后精度；cout<<setprecision() 设置输出小数位数
     cout<<cal.trapezoid(fu)<<endl;
     cout<<cal.simpson(fu)<<endl;
     cout<<cal.cotes(fu)<<endl;
